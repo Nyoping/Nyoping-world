@@ -1,33 +1,231 @@
-# ========================================
-#       NyopingWorld 설정 파일
-# ========================================
+# NationWar config
+# Server timezone is fixed to Asia/Seoul for daily upkeep.
 
-# --- 랭크 설정 ---
-ranks:
-  default-rank: member
+spawn-protection:
+  world: world
+  center-x: 0
+  center-z: 0
+  radius: 10
 
-# --- 경제 설정 ---
+money:
+  start-balance: 0
+  pvp-steal-percent: 10  # victim money percent, floor
+  pvp-steal-per-combat-level: 100
+
+stat:
+  xp-per-point: 100  # 100XP => 1 스탯포인트(레벨)
+
+nation:
+  max-level: 100
+  upgrade-cost-multiplier: 5000   # cost = currentLevel * multiplier
+  daily-upkeep-multiplier: 1000   # upkeep = level * multiplier
+  arrears-days-for-level-down: 5
+  territory:
+    size-x: 16
+    size-z: 16
+    min-y: 0
+    max-y: 320
+
+nexus:
+  give-on-first-join: true
+  place:
+    min-y: 50
+    max-y: 300
+  overworld-invulnerable: true
+
+war:
+  world-name: War_World
+  border-size: 500
+  flat:
+    enabled: true
+    biome: PLAINS
+    y-level: 64
+  match:
+    min-team-size: 3
+    ready-time-seconds: 120
+    assist-window-seconds: 15
+  spawns:
+    team-a:
+      x: 0
+      y: 64
+      z: -200
+    team-b:
+      x: 0
+      y: 64
+      z: 200
+
+structures:
+  nexus:
+    size: 4
+    max-health: 50
+    regen-per-second: 0.5
+  inhibitor:
+    size: 4
+    max-health: 20
+    regen-per-second: 0.5
+    max-level: 10
+    upgrade-cost-multiplier: 5000
+  turret:
+    size-x: 3
+    size-z: 3
+    size-y: 8
+    max-health: 10
+    damage-per-second: 6
+    range: 20
+    max-level: 10
+    upgrade-cost-multiplier: 5000
+
+jobs:
+  max-per-player: 2
+  remove-cooldown-hours: 24
+  available:
+    - MINER
+    - FARMER
+    - COOK
+    - FISHER
+    - HUNTER
+    - BREWER
+
+resource-packs:
+  enabled: true
+  # 리소스팩 거부 시 서버에서 킥할지 여부
+  force: true
+  # 리소스팩 다운로드 안내 메시지
+  prompt: "§e[NationWar] §f커스텀 HUD를 위해 리소스팩을 설치해주세요!"
+  packs:
+    vanilla-hud-hide:
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663342695035/JvoAxzYrwMbZBCgF.zip"
+      hash: "80a4b33a3f3ffe3f9a85529a45c3e40ca54c6fe2"
+    betterhud-pack:
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663342695035/yhnzNfwFiaYwcxig.zip"
+      hash: "20f0104635bcb8923848828171c1aa0f782f7909"
+
+hud:
+  actionbar-update-ticks: 20
+
+ui:
+  damage-indicator:
+    enabled: false
+  border-visual:
+    period-ticks: 5
+    particle: DUST
+    dust-size: 1.1
+    step: 1.0
+    default-seconds: 15
+  menu-combo:
+    enabled: true
+    # F+F+Q 조합으로 플레이어 메뉴 열기 (서버가 감지 가능한 키만 사용)
+    # 주의: Q(드랍) 이벤트는 손에 아이템이 있을 때만 발생합니다.
+    # 따라서 기본값은 false로 두고, 콤보 인식 시 드랍은 자동으로 취소됩니다.
+    require-empty-hands: false
+    window-ms: 700
+
+
+miner:
+  grade-chance-by-rank:
+    0: { rare: 0.005, epic: 0.0005 }  # 신입
+    1: { rare: 0.01,  epic: 0.001 }   # 폐급
+    2: { rare: 0.03,  epic: 0.003 }   # 초급
+    3: { rare: 0.06,  epic: 0.008 }   # 중급
+    4: { rare: 0.10,  epic: 0.015 }   # 상급
+    5: { rare: 0.15,  epic: 0.025 }   # 최상급
+    6: { rare: 0.22,  epic: 0.04 }    # 특급
+    7: { rare: 0.30,  epic: 0.06 }    # 짬킹
+
+
+fisher:
+  double-chance-by-rank:
+    0: 0
+    1: 1
+    2: 3
+    3: 6
+    4: 10
+    5: 15
+    6: 22
+    7: 30
+
+
+farmer:
+  grade-chance-by-rank:
+    0: { rare: 0.005, epic: 0.0005 }
+    1: { rare: 0.01,  epic: 0.001 }
+    2: { rare: 0.03,  epic: 0.003 }
+    3: { rare: 0.06,  epic: 0.008 }
+    4: { rare: 0.10,  epic: 0.015 }
+    5: { rare: 0.15,  epic: 0.025 }
+    6: { rare: 0.22,  epic: 0.04 }
+    7: { rare: 0.30,  epic: 0.06 }
+  double-chance-by-rank:
+    0: 0.0
+    1: 0.01
+    2: 0.03
+    3: 0.06
+    4: 0.10
+    5: 0.15
+    6: 0.22
+    7: 0.30
+
+
+hunter:
+  head-drop-chance-by-rank:
+    non_hunter: 0.01
+    0: 0.10
+    1: 0.12
+    2: 0.15
+    3: 0.18
+    4: 0.21
+    5: 0.24
+    6: 0.27
+    7: 0.30
+  head-grade-by-level:
+    1:   { vanilla: 0.99, rare: 0.01, epic: 0.0 }
+    50:  { vanilla: 0.30, rare: 0.65, epic: 0.05 }
+    100: { vanilla: 0.20, rare: 0.40, epic: 0.40 }
+  loot-grade-chance-by-rank:
+    0: { rare: 0.005, epic: 0.0005 }
+    1: { rare: 0.01,  epic: 0.001 }
+    2: { rare: 0.03,  epic: 0.003 }
+    3: { rare: 0.06,  epic: 0.008 }
+    4: { rare: 0.10,  epic: 0.015 }
+    5: { rare: 0.15,  epic: 0.025 }
+    6: { rare: 0.22,  epic: 0.04 }
+    7: { rare: 0.30,  epic: 0.06 }
+
+
+cook:
+  grade-chance-by-rank:
+    0: { rare: 0.005, epic: 0.0005 }
+    1: { rare: 0.01,  epic: 0.001 }
+    2: { rare: 0.03,  epic: 0.003 }
+    3: { rare: 0.06,  epic: 0.008 }
+    4: { rare: 0.10,  epic: 0.015 }
+    5: { rare: 0.15,  epic: 0.025 }
+    6: { rare: 0.22,  epic: 0.04 }
+    7: { rare: 0.30,  epic: 0.06 }
+
+
 economy:
-  currency-name: "원"
-  starting-balance: 1000.0
-  # 상점 아이템 (아이템이름:가격)
-  shop-items:
-    - "DIAMOND:500"
-    - "IRON_INGOT:50"
-    - "GOLD_INGOT:100"
-    - "EMERALD:300"
-    - "BREAD:10"
-    - "COOKED_BEEF:15"
-    - "ARROW:5"
-    - "ENDER_PEARL:200"
+  enchant:
+    book_unit: 3000
+    gear_unit: 1000
+    coeff_6:
+      - mending
+      - silk_touch
+      - fortune
+      - looting
+      - luck_of_the_sea
+      - lure
+    coeff_0:
+      - binding_curse
+      - vanishing_curse
+  base_prices:
+    bow: 120
+    fishing_rod: 90
 
-# --- 텔레포트 설정 ---
-teleport:
-  max-homes: 3
-
-# --- 채팅 설정 ---
-chat:
-  format: "{prefix} &f{player}&7: &f{message}"
-  broadcast-prefix: "&c&l[공지]"
-  join-format: "&a+ &e{player}님이 서버에 접속했습니다."
-  quit-format: "&c- &7{player}님이 서버에서 나갔습니다."
+cook:
+  campfire_auto_extinguish_minutes: 10
+  water:
+    record_ttl_hours: 72
+    record_limit: 10000
+  smoker_buffer:
+    tick_interval_ticks: 20

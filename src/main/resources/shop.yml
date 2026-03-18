@@ -1,0 +1,1108 @@
+shop:
+  title: §0상점 가격표
+  sell_title: §0매입 상점
+  currency_suffix: 원
+  sounds:
+    success: ENTITY_PLAYER_LEVELUP
+    fail: BLOCK_NOTE_BLOCK_BASS
+  grade_multiplier:
+    rare: 1.5
+    epic: 2.0
+  deny_sell_materials:
+  - RAW_IRON
+  - RAW_GOLD
+  - RAW_COPPER
+  gui:
+    page_item_slots: 36
+    allow_sorting: true
+    sort_modes:
+    - DEFAULT
+    - PRICE_ASC
+    - PRICE_DESC
+    - NAME_ASC
+    filters:
+    - id: ALL
+      name: 전체
+      icon: CHEST
+    - id: MINER
+      name: 광부
+      icon: IRON_PICKAXE
+    - id: FARMER
+      name: 농부
+      icon: WHEAT
+    - id: FISHER
+      name: 어부
+      icon: FISHING_ROD
+    - id: COOK
+      name: 요리사
+      icon: COOKED_BEEF
+    - id: HUNTER
+      name: 사냥꾼
+      icon: BOW
+    - id: BREWER
+      name: 양조사
+      icon: BREWING_STAND
+    - id: MY_JOBS
+      name: 내 직업
+      icon: PLAYER_HEAD
+  entries:
+  - key: EMERALD
+    type: material
+    material: EMERALD
+    price_each: 10000
+    sell: true
+    jobs:
+    - MINER
+    - HUNTER
+  - key: GLASS_BOTTLE
+    type: material
+    material: GLASS_BOTTLE
+    display: 유리병
+    price_each: 30
+    sell: true
+    jobs: []
+  - key: BOWL
+    type: material
+    material: BOWL
+    display: 빈 그릇
+    price_each: 30
+    sell: true
+    jobs: []
+  - key: WATER_BOTTLE
+    type: special
+    special: WATER_BOTTLE
+    display: 물병
+    price_each: 30
+    sell: true
+    jobs: []
+  - key: EGG
+    type: material
+    material: EGG
+    price_each: 200
+    sell: true
+    jobs: []
+  - key: MILK_BUCKET
+    type: material
+    material: MILK_BUCKET
+    display: 우유 양동이
+    price_each: 400
+    sell: false
+    jobs: []
+  - key: BUCKET_DRINK
+    type: custom
+    item_id: bucket_drink
+    display: 식수 양동이
+    icon_material: WATER_BUCKET
+    price_each: 80
+    sell: false
+    jobs: []
+  - key: BUCKET_SALT
+    type: custom
+    item_id: bucket_salt
+    display: 염수 양동이
+    icon_material: WATER_BUCKET
+    price_each: 80
+    sell: false
+    jobs: []
+  - key: BUCKET
+    type: material
+    material: BUCKET
+    display: 빈 양동이
+    price_each: 500
+    sell: false
+    jobs: []
+  - key: SUGAR
+    type: material
+    material: SUGAR
+    price_each: 60
+    sell: false
+    jobs: []
+  - key: IRON_INGOT
+    type: material
+    material: IRON_INGOT
+    price_each: 2500
+    sell: true
+    jobs:
+    - MINER
+    - HUNTER
+  - key: GOLD_INGOT
+    type: material
+    material: GOLD_INGOT
+    price_each: 3500
+    sell: true
+    jobs:
+    - MINER
+    - HUNTER
+  - key: GOLD_NUGGET
+    type: material
+    material: GOLD_NUGGET
+    price_each: 390
+    sell: true
+    jobs:
+    - HUNTER
+  - key: COPPER_INGOT
+    type: material
+    material: COPPER_INGOT
+    price_each: 1200
+    sell: true
+    jobs:
+    - MINER
+    - HUNTER
+  - key: DIAMOND
+    type: material
+    material: DIAMOND
+    price_each: 15000
+    sell: true
+    jobs:
+    - MINER
+  - key: REDSTONE
+    type: material
+    material: REDSTONE
+    price_each: 150
+    sell: true
+    jobs:
+    - MINER
+    - HUNTER
+  - key: LAPIS_LAZULI
+    type: material
+    material: LAPIS_LAZULI
+    price_each: 220
+    sell: true
+    jobs:
+    - MINER
+  - key: QUARTZ
+    type: material
+    material: QUARTZ
+    price_each: 400
+    sell: true
+    jobs:
+    - MINER
+  - key: AMETHYST_SHARD
+    type: material
+    material: AMETHYST_SHARD
+    price_each: 300
+    sell: true
+    jobs:
+    - MINER
+  - key: COAL
+    type: material
+    material: COAL
+    price_each: 120
+    sell: true
+    jobs: []
+  - key: NETHERITE_SCRAP
+    type: material
+    material: NETHERITE_SCRAP
+    price_each: 18000
+    sell: true
+    jobs:
+    - MINER
+  - key: NETHERITE_INGOT
+    type: material
+    material: NETHERITE_INGOT
+    price_each: 72000
+    sell: true
+    jobs:
+    - MINER
+  - key: RAW_DIAMOND
+    type: custom
+    item_id: raw_diamond
+    display: 다이아 원석
+    icon_material: FLINT
+    price_each: 15000
+    sell: false
+    jobs:
+    - MINER
+  - key: RAW_EMERALD
+    type: custom
+    item_id: raw_emerald
+    display: 에메랄드 원석
+    icon_material: FLINT
+    price_each: 10000
+    sell: false
+    jobs:
+    - MINER
+  - key: RAW_REDSTONE
+    type: custom
+    item_id: raw_redstone
+    display: 레드스톤 원석
+    icon_material: FLINT
+    price_each: 150
+    sell: false
+    jobs:
+    - MINER
+  - key: RAW_LAPIS
+    type: custom
+    item_id: raw_lapis
+    display: 청금석 원석
+    icon_material: FLINT
+    price_each: 220
+    sell: false
+    jobs:
+    - MINER
+  - key: RAW_QUARTZ
+    type: custom
+    item_id: raw_quartz
+    display: 석영 원석
+    icon_material: FLINT
+    price_each: 400
+    sell: false
+    jobs:
+    - MINER
+  - key: RAW_AMETHYST
+    type: custom
+    item_id: raw_amethyst
+    display: 자수정 원석
+    icon_material: FLINT
+    price_each: 300
+    sell: false
+    jobs:
+    - MINER
+  - key: WHEAT
+    type: material
+    material: WHEAT
+    price_each: 80
+    sell: true
+    jobs:
+    - FARMER
+  - key: CARROT
+    type: material
+    material: CARROT
+    price_each: 120
+    sell: true
+    jobs:
+    - FARMER
+    - HUNTER
+  - key: POTATO
+    type: material
+    material: POTATO
+    price_each: 120
+    sell: true
+    jobs:
+    - FARMER
+    - HUNTER
+  - key: BEETROOT
+    type: material
+    material: BEETROOT
+    price_each: 100
+    sell: true
+    jobs:
+    - FARMER
+  - key: APPLE
+    type: material
+    material: APPLE
+    price_each: 500
+    sell: true
+    jobs:
+    - FARMER
+  - key: SWEET_BERRIES
+    type: material
+    material: SWEET_BERRIES
+    price_each: 150
+    sell: true
+    jobs:
+    - FARMER
+  - key: GLOW_BERRIES
+    type: material
+    material: GLOW_BERRIES
+    price_each: 180
+    sell: true
+    jobs:
+    - FARMER
+  - key: SUGAR_CANE
+    type: material
+    material: SUGAR_CANE
+    price_each: 70
+    sell: true
+    jobs:
+    - FARMER
+  - key: COCOA_BEANS
+    type: material
+    material: COCOA_BEANS
+    price_each: 90
+    sell: true
+    jobs:
+    - FARMER
+  - key: PUMPKIN
+    type: material
+    material: PUMPKIN
+    price_each: 350
+    sell: true
+    jobs:
+    - FARMER
+  - key: MELON_SLICE
+    type: material
+    material: MELON_SLICE
+    price_each: 90
+    sell: true
+    jobs:
+    - FARMER
+  - key: HONEY_BOTTLE
+    type: material
+    material: HONEY_BOTTLE
+    price_each: 450
+    sell: true
+    jobs:
+    - FARMER
+  - key: HONEYCOMB
+    type: material
+    material: HONEYCOMB
+    price_each: 250
+    sell: true
+    jobs:
+    - FARMER
+    display: 벌집 조각
+  - key: BROWN_MUSHROOM
+    type: material
+    material: BROWN_MUSHROOM
+    price_each: 150
+    sell: true
+    jobs: []
+    display: 갈색 버섯
+  - key: RED_MUSHROOM
+    type: material
+    material: RED_MUSHROOM
+    price_each: 150
+    sell: true
+    jobs: []
+    display: 빨간 버섯
+  - key: CROP_CHILI
+    type: custom
+    item_id: crop_chili
+    display: 고추
+    icon_material: WHEAT
+    price_each: 180
+    sell: true
+    jobs:
+    - FARMER
+  - key: CROP_CHILI_SEED
+    type: custom
+    item_id: crop_seed_chili
+    display: 고추 씨앗
+    icon_material: WHEAT_SEEDS
+    price_each: 20
+    sell: false
+    jobs: []
+  - key: CROP_TOMATO
+    type: custom
+    item_id: crop_tomato
+    display: 토마토
+    icon_material: WHEAT
+    price_each: 200
+    sell: true
+    jobs:
+    - FARMER
+  - key: CROP_TOMATO_SEED
+    type: custom
+    item_id: crop_seed_tomato
+    display: 토마토 씨앗
+    icon_material: WHEAT_SEEDS
+    price_each: 20
+    sell: false
+    jobs: []
+  - key: CROP_STRAWBERRY
+    type: custom
+    item_id: crop_strawberry
+    display: 딸기
+    icon_material: WHEAT
+    price_each: 220
+    sell: true
+    jobs:
+    - FARMER
+  - key: CROP_STRAWBERRY_SEED
+    type: custom
+    item_id: crop_seed_strawberry
+    display: 딸기 씨앗
+    icon_material: WHEAT_SEEDS
+    price_each: 20
+    sell: false
+    jobs: []
+  - key: CROP_GREEN_ONION
+    type: custom
+    item_id: crop_green_onion
+    display: 파
+    icon_material: WHEAT
+    price_each: 140
+    sell: true
+    jobs:
+    - FARMER
+  - key: CROP_GREEN_ONION_SEED
+    type: custom
+    item_id: crop_seed_green_onion
+    display: 파 씨앗
+    icon_material: WHEAT_SEEDS
+    price_each: 20
+    sell: false
+    jobs: []
+  - key: CROP_GARLIC
+    type: custom
+    item_id: crop_garlic
+    display: 마늘
+    icon_material: WHEAT
+    price_each: 160
+    sell: true
+    jobs:
+    - FARMER
+  - key: CROP_GARLIC_SEED
+    type: custom
+    item_id: crop_seed_garlic
+    display: 마늘 씨앗
+    icon_material: WHEAT_SEEDS
+    price_each: 20
+    sell: false
+    jobs: []
+  - key: CROP_ONION
+    type: custom
+    item_id: crop_onion
+    display: 양파
+    icon_material: WHEAT
+    price_each: 160
+    sell: true
+    jobs:
+    - FARMER
+  - key: CROP_ONION_SEED
+    type: custom
+    item_id: crop_seed_onion
+    display: 양파 씨앗
+    icon_material: WHEAT_SEEDS
+    price_each: 20
+    sell: false
+    jobs: []
+  - key: CROP_CABBAGE
+    type: custom
+    item_id: crop_cabbage
+    display: 배추
+    icon_material: WHEAT
+    price_each: 220
+    sell: true
+    jobs:
+    - FARMER
+  - key: CROP_CABBAGE_SEED
+    type: custom
+    item_id: crop_seed_cabbage
+    display: 배추 씨앗
+    icon_material: WHEAT_SEEDS
+    price_each: 20
+    sell: false
+    jobs: []
+  - key: CROP_RADISH
+    type: custom
+    item_id: crop_radish
+    display: 무
+    icon_material: WHEAT
+    price_each: 180
+    sell: true
+    jobs:
+    - FARMER
+  - key: CROP_RADISH_SEED
+    type: custom
+    item_id: crop_seed_radish
+    display: 무 씨앗
+    icon_material: WHEAT_SEEDS
+    price_each: 20
+    sell: false
+    jobs: []
+  - key: CROP_SOYBEAN
+    type: custom
+    item_id: crop_soybean
+    display: 콩
+    icon_material: WHEAT
+    price_each: 90
+    sell: true
+    jobs:
+    - FARMER
+  - key: CROP_SOYBEAN_SEED
+    type: custom
+    item_id: crop_seed_soybean
+    display: 콩 씨앗
+    icon_material: WHEAT_SEEDS
+    price_each: 20
+    sell: false
+    jobs: []
+  - key: CROP_BARLEY
+    type: custom
+    item_id: crop_barley
+    display: 보리
+    icon_material: WHEAT
+    price_each: 120
+    sell: true
+    jobs:
+    - FARMER
+  - key: CROP_BARLEY_SEED
+    type: custom
+    item_id: crop_seed_barley
+    display: 보리 씨앗
+    icon_material: WHEAT_SEEDS
+    price_each: 20
+    sell: false
+    jobs: []
+  - key: CROP_HOP
+    type: custom
+    item_id: crop_hop
+    display: 홉
+    icon_material: WHEAT
+    price_each: 160
+    sell: true
+    jobs:
+    - FARMER
+  - key: CROP_HOP_SEED
+    type: custom
+    item_id: crop_seed_hop
+    display: 홉 씨앗
+    icon_material: WHEAT_SEEDS
+    price_each: 20
+    sell: false
+    jobs: []
+  - key: CROP_RICE
+    type: custom
+    item_id: crop_rice
+    display: 벼
+    icon_material: WHEAT
+    price_each: 110
+    sell: true
+    jobs:
+    - FARMER
+  - key: CROP_RICE_SEED
+    type: custom
+    item_id: crop_seed_rice
+    display: 벼 씨앗
+    icon_material: WHEAT_SEEDS
+    price_each: 20
+    sell: false
+    jobs: []
+  - key: CROP_TURMERIC
+    type: custom
+    item_id: crop_turmeric
+    display: 강황
+    icon_material: WHEAT
+    price_each: 180
+    sell: true
+    jobs:
+    - FARMER
+  - key: CROP_TURMERIC_SEED
+    type: custom
+    item_id: crop_seed_turmeric
+    display: 강황 씨앗
+    icon_material: WHEAT_SEEDS
+    price_each: 20
+    sell: false
+    jobs: []
+  - key: BEEF
+    type: material
+    material: BEEF
+    price_each: 1600
+    sell: true
+    jobs:
+    - FARMER
+    - HUNTER
+    display: 익히지 않은 소고기
+  - key: PORKCHOP
+    type: material
+    material: PORKCHOP
+    price_each: 1400
+    sell: true
+    jobs:
+    - FARMER
+    - HUNTER
+    display: 익히지 않은 돼지고기
+  - key: CHICKEN
+    type: material
+    material: CHICKEN
+    price_each: 1200
+    sell: true
+    jobs:
+    - FARMER
+    - HUNTER
+    display: 익히지 않은 닭고기
+  - key: MUTTON
+    type: material
+    material: MUTTON
+    price_each: 1350
+    sell: true
+    jobs:
+    - FARMER
+    - HUNTER
+    display: 익히지 않은 양고기
+  - key: RABBIT
+    type: material
+    material: RABBIT
+    price_each: 1500
+    sell: true
+    jobs:
+    - FARMER
+    - HUNTER
+    display: 익히지 않은 토끼고기
+  - key: COD
+    type: material
+    material: COD
+    price_each: 800
+    sell: true
+    jobs:
+    - FISHER
+    - HUNTER
+    display: 익히지 않은 대구
+  - key: SALMON
+    type: material
+    material: SALMON
+    price_each: 1000
+    sell: true
+    jobs:
+    - FISHER
+    - HUNTER
+    display: 익히지 않은 연어
+  - key: TROPICAL_FISH
+    type: material
+    material: TROPICAL_FISH
+    price_each: 2000
+    sell: true
+    jobs:
+    - FISHER
+    - HUNTER
+  - key: PUFFERFISH
+    type: material
+    material: PUFFERFISH
+    price_each: 2200
+    sell: true
+    jobs:
+    - FISHER
+    - HUNTER
+  - key: ROTTEN_FLESH
+    type: material
+    material: ROTTEN_FLESH
+    price_each: 5
+    sell: true
+    jobs: []
+    display: 썩은 고기
+  - key: SPIDER_EYE
+    type: material
+    material: SPIDER_EYE
+    price_each: 15
+    sell: true
+    jobs: []
+    display: 거미 눈
+  - key: INK_SAC
+    type: material
+    material: INK_SAC
+    price_each: 600
+    sell: true
+    jobs:
+    - FISHER
+    - HUNTER
+    display: 먹물주머니
+  - key: GLOW_INK_SAC
+    type: material
+    material: GLOW_INK_SAC
+    price_each: 900
+    sell: true
+    jobs:
+    - FISHER
+    - HUNTER
+    display: 발광먹물주머니
+  - key: KELP
+    type: material
+    material: KELP
+    price_each: 150
+    sell: true
+    jobs:
+    - FISHER
+  - key: DRIED_KELP
+    type: material
+    material: DRIED_KELP
+    price_each: 400
+    sell: true
+    jobs: []
+  - key: NAUTILUS_SHELL
+    type: material
+    material: NAUTILUS_SHELL
+    price_each: 4000
+    sell: true
+    jobs: []
+    display: 앵무조개껍데기
+  - key: NAME_TAG
+    type: material
+    material: NAME_TAG
+    price_each: 3500
+    sell: true
+    jobs: []
+  - key: SADDLE
+    type: material
+    material: SADDLE
+    price_each: 4500
+    sell: true
+    jobs: []
+  - key: MALT
+    type: custom
+    item_id: malt
+    display: 맥아
+    icon_material: WHEAT
+    price_each: 600
+    sell: false
+    jobs: []
+  - key: YEAST
+    type: custom
+    item_id: yeast
+    display: 이스트
+    icon_material: SUGAR
+    price_each: 900
+    sell: false
+    jobs: []
+  - key: COOKED_RICE
+    type: custom
+    item_id: cooked_rice
+    display: 밥
+    icon_material: BOWL
+    price_each: 900
+    sell: false
+    jobs: []
+  - key: RICE_GRAIN
+    type: custom
+    item_id: rice_grain
+    display: 쌀
+    icon_material: WHEAT
+    price_each: 350
+    sell: false
+    jobs: []
+  - key: KIMCHI
+    type: custom
+    item_id: kimchi
+    display: 김치
+    icon_material: BREAD
+    price_each: 1500
+    sell: false
+    jobs: []
+  - key: TOFU
+    type: custom
+    item_id: tofu
+    display: 두부
+    icon_material: BREAD
+    price_each: 800
+    sell: false
+    jobs: []
+  - key: FRIED_EGG
+    type: custom
+    item_id: fried_egg
+    display: 계란후라이
+    icon_material: EGG
+    price_each: 700
+    sell: false
+    jobs: []
+  - key: CHEESE
+    type: custom
+    item_id: cheese
+    display: 치즈
+    icon_material: BREAD
+    price_each: 700
+    sell: false
+    jobs: []
+  - key: BUTTER
+    type: custom
+    item_id: butter
+    display: 버터
+    icon_material: BREAD
+    price_each: 250
+    sell: false
+    jobs: []
+  - key: WHIPPED_CREAM
+    type: custom
+    item_id: whipped_cream
+    display: 생크림
+    icon_material: MILK_BUCKET
+    price_each: 600
+    sell: false
+    jobs: []
+  - key: GOCHUJANG_BOWL
+    type: custom
+    item_id: gochujang_bowl
+    display: 고추장(그릇)
+    icon_material: BOWL
+    price_each: 200
+    sell: false
+    jobs: []
+  - key: DOENJANG_BOWL
+    type: custom
+    item_id: doenjang_bowl
+    display: 된장(그릇)
+    icon_material: BOWL
+    price_each: 180
+    sell: false
+    jobs: []
+  - key: CHILI_POWDER
+    type: custom
+    item_id: chili_powder
+    display: 고춧가루
+    icon_material: RED_DYE
+    price_each: 50
+    sell: false
+    jobs: []
+  - key: SALT
+    type: custom
+    item_id: salt
+    display: 소금
+    icon_material: SUGAR
+    price_each: 100
+    sell: false
+    jobs: []
+  - key: FOOD_STRAWBERRY_CHOCOLATE_CAKE
+    type: custom
+    item_id: food_strawberry_chocolate_cake
+    display: 딸기초코케이크
+    icon_material: BREAD
+    price_each: 25800
+    sell: true
+    jobs:
+    - COOK
+  - key: CAKE
+    type: material
+    material: CAKE
+    display: 케이크(설치형)
+    price_each: 24900
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_STEAK_SET
+    type: custom
+    item_id: food_steak_set
+    display: 스테이크 정식
+    icon_material: BREAD
+    price_each: 28000
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_BEER_CHICKEN
+    type: custom
+    item_id: food_beer_chicken
+    display: 비어치킨
+    icon_material: BREAD
+    price_each: 20000
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_FRUIT_PUNCH_BUCKET
+    type: custom
+    item_id: food_fruit_punch_bucket
+    display: 화채양동이
+    icon_material: BREAD
+    price_each: 19000
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_PIZZA
+    type: custom
+    item_id: food_pizza
+    display: 피자
+    icon_material: BREAD
+    price_each: 18000
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_KIMCHI_JEYUK
+    type: custom
+    item_id: food_kimchi_jeyuk
+    display: 김치제육볶음
+    icon_material: BREAD
+    price_each: 17000
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_COD_SOUP
+    type: custom
+    item_id: food_cod_soup
+    display: 대구탕
+    icon_material: BREAD
+    price_each: 7400
+    sell: true
+    jobs:
+    - COOK
+  - key: RABBIT_STEW
+    type: material
+    material: RABBIT_STEW
+    display: 토끼스튜
+    price_each: 16000
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_BEEF_CURRY_RICE
+    type: custom
+    item_id: food_beef_curry_rice
+    display: 소고기카레라이스
+    icon_material: BREAD
+    price_each: 15300
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_JEYUK
+    type: custom
+    item_id: food_jeyuk
+    display: 제육볶음
+    icon_material: BREAD
+    price_each: 15000
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_CHICKEN_CURRY_RICE
+    type: custom
+    item_id: food_chicken_curry_rice
+    display: 치킨카레라이스
+    icon_material: BREAD
+    price_each: 14300
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_SALMON_BOWL
+    type: custom
+    item_id: food_salmon_bowl
+    display: 연어덮밥
+    icon_material: BREAD
+    price_each: 14000
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_KIMCHI_STEW
+    type: custom
+    item_id: food_kimchi_stew
+    display: 김치찌개
+    icon_material: BREAD
+    price_each: 13000
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_DOENJANG_STEW
+    type: custom
+    item_id: food_doenjang_stew
+    display: 된장찌개
+    icon_material: BREAD
+    price_each: 12100
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_LAMB_SKEWER
+    type: custom
+    item_id: food_lamb_skewer
+    display: 양꼬치
+    icon_material: BREAD
+    price_each: 12000
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_KIMCHI_FRIED_RICE
+    type: custom
+    item_id: food_kimchi_fried_rice
+    display: 김치볶음밥
+    icon_material: BREAD
+    price_each: 12000
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_HAMBURGER
+    type: custom
+    item_id: food_hamburger
+    display: 햄버거
+    icon_material: BREAD
+    price_each: 12000
+    sell: true
+    jobs:
+    - COOK
+  - key: MUSHROOM_STEW
+    type: material
+    material: MUSHROOM_STEW
+    display: 버섯스튜
+    price_each: 4400
+    sell: true
+    jobs:
+    - COOK
+  - key: BEETROOT_SOUP
+    type: material
+    material: BEETROOT_SOUP
+    display: 비트스프
+    price_each: 2700
+    sell: true
+    jobs:
+    - COOK
+  - key: PUMPKIN_PIE
+    type: material
+    material: PUMPKIN_PIE
+    display: 호박파이
+    price_each: 7500
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_BEER
+    type: custom
+    item_id: food_beer
+    display: 맥주
+    icon_material: BREAD
+    price_each: 7000
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_CHICKEN_NUGGET
+    type: custom
+    item_id: food_chicken_nugget
+    display: 치킨너겟
+    icon_material: BREAD
+    price_each: 9000
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_FRENCH_FRIES
+    type: custom
+    item_id: food_french_fries
+    display: 감자튀김
+    icon_material: BREAD
+    price_each: 4700
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_SALT_BREAD
+    type: custom
+    item_id: food_salt_bread
+    display: 소금빵
+    icon_material: BREAD
+    price_each: 5500
+    sell: true
+    jobs:
+    - COOK
+  - key: FOOD_RICE_BALL
+    type: custom
+    item_id: food_rice_ball
+    display: 주먹밥
+    icon_material: BREAD
+    price_each: 5000
+    sell: true
+    jobs:
+    - COOK
+  - key: COOKIE
+    type: material
+    material: COOKIE
+    display: 쿠키
+    price_each: 1500
+    sell: true
+    jobs:
+    - COOK
+  - key: HUNTER_HEAD_T1
+    type: custom
+    item_id: hunter_head_t1
+    display: 몹 머리 T1
+    icon_material: PAPER
+    price_each: 2000
+    sell: true
+    jobs:
+    - HUNTER
+  - key: HUNTER_HEAD_T2
+    type: custom
+    item_id: hunter_head_t2
+    display: 몹 머리 T2
+    icon_material: PAPER
+    price_each: 4000
+    sell: true
+    jobs:
+    - HUNTER
+  - key: HUNTER_HEAD_T3
+    type: custom
+    item_id: hunter_head_t3
+    display: 몹 머리 T3
+    icon_material: PAPER
+    price_each: 8000
+    sell: true
+    jobs:
+    - HUNTER
