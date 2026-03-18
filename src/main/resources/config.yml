@@ -1,0 +1,33 @@
+# ========================================
+#       NyopingWorld 설정 파일
+# ========================================
+
+# --- 랭크 설정 ---
+ranks:
+  default-rank: member
+
+# --- 경제 설정 ---
+economy:
+  currency-name: "원"
+  starting-balance: 1000.0
+  # 상점 아이템 (아이템이름:가격)
+  shop-items:
+    - "DIAMOND:500"
+    - "IRON_INGOT:50"
+    - "GOLD_INGOT:100"
+    - "EMERALD:300"
+    - "BREAD:10"
+    - "COOKED_BEEF:15"
+    - "ARROW:5"
+    - "ENDER_PEARL:200"
+
+# --- 텔레포트 설정 ---
+teleport:
+  max-homes: 3
+
+# --- 채팅 설정 ---
+chat:
+  format: "{prefix} &f{player}&7: &f{message}"
+  broadcast-prefix: "&c&l[공지]"
+  join-format: "&a+ &e{player}님이 서버에 접속했습니다."
+  quit-format: "&c- &7{player}님이 서버에서 나갔습니다."

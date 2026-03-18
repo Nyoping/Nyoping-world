@@ -1,0 +1,43 @@
+# ========================================
+#       NyopingWorld 랭크 설정
+# ========================================
+
+ranks:
+  member:
+    prefix: "&7[멤버]"
+    permissions:
+      - nyoping.home
+      - nyoping.tpa
+      - nyoping.warp.use
+      - nyoping.shop
+      - nyoping.pay
+
+  vip:
+    prefix: "&a[VIP]"
+    permissions:
+      - nyoping.home
+      - nyoping.tpa
+      - nyoping.warp.use
+      - nyoping.shop
+      - nyoping.pay
+      - nyoping.home.extra
+
+  admin:
+    prefix: "&c[관리자]"
+    permissions:
+      - nyoping.home
+      - nyoping.tpa
+      - nyoping.warp.use
+      - nyoping.warp.set
+      - nyoping.warp.delete
+      - nyoping.shop
+      - nyoping.pay
+      - nyoping.rank
+      - nyoping.economy.admin
+      - nyoping.broadcast
+      - nyoping.mute
+
+  owner:
+    prefix: "&4&l[서버장]"
+    permissions:
+      - nyoping.*
