@@ -32,6 +32,16 @@ public class PlayerProfile {
     private boolean showOtherBorders;
     private boolean pendingNexusOnLeave;
     private final EnumMap<StatType, Integer> stats = new EnumMap(StatType.class);
+    private final EnumMap<JobType, Integer> jobProficiency = new EnumMap(JobType.class);
+
+    /** Proficiency level required to be eligible for each rank (index = rank 0..7). */
+    public static final int[] RANK_PROMOTION_LEVELS = {0, 5, 10, 20, 30, 50, 70, 100};
+
+    /** Proficiency XP required per level-up (flat 100 for all levels). */
+    public static final int XP_PER_LEVEL = 100;
+
+    /** Max proficiency level. */
+    public static final int MAX_PROFICIENCY_LEVEL = 100;
 
     public PlayerProfile(UUID uuid) {
         this.uuid = uuid;
@@ -236,6 +246,46 @@ for (JobType j : this.jobs) {
 
     public void setPendingNexusOnLeave(boolean pendingNexusOnLeave) {
         this.pendingNexusOnLeave = pendingNexusOnLeave;
+    }
+
+    // --- Proficiency (숙련도) ---
+
+    /** Get raw proficiency XP for a job. */
+    public int getJobProficiency(JobType job) {
+        if (job == null || job == JobType.UNEMPLOYED) return 0;
+        Integer v = this.jobProficiency.get(job);
+        return v == null ? 0 : v;
+    }
+
+    /** Get proficiency level (0~100) for a job. Level = totalXP / 100. */
+    public int getJobProficiencyLevel(JobType job) {
+        return Math.min(MAX_PROFICIENCY_LEVEL, getJobProficiency(job) / XP_PER_LEVEL);
+    }
+
+    /** Set raw proficiency XP for a job. */
+    public void setJobProficiency(JobType job, int xp) {
+        if (job == null || job == JobType.UNEMPLOYED) return;
+        this.jobProficiency.put(job, Math.max(0, Math.min(MAX_PROFICIENCY_LEVEL * XP_PER_LEVEL, xp)));
+    }
+
+    /** Add proficiency XP for a job. Returns the new total. */
+    public int addJobProficiency(JobType job, int xp) {
+        if (job == null || job == JobType.UNEMPLOYED) return 0;
+        int current = getJobProficiency(job);
+        int max = MAX_PROFICIENCY_LEVEL * XP_PER_LEVEL;
+        int newVal = Math.min(max, current + xp);
+        this.jobProficiency.put(job, newVal);
+        return newVal;
+    }
+
+    public Map<JobType, Integer> getJobProficiencyMap() {
+        return this.jobProficiency;
+    }
+
+    /** Check if player meets proficiency level requirement for a given rank. */
+    public boolean meetsRankProficiency(JobType job, int rank) {
+        if (rank < 0 || rank >= RANK_PROMOTION_LEVELS.length) return false;
+        return getJobProficiencyLevel(job) >= RANK_PROMOTION_LEVELS[rank];
     }
 }
 

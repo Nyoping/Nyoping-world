@@ -85,6 +85,26 @@ jobs:
     - FISHER
     - HUNTER
     - BREWER
+  proficiency:
+    xp-per-level: 100          # 모든 구간 100 고정
+    max-level: 100
+    # 숙련도 획득량 (직업별 행동 1회당)
+    xp-per-action:
+      miner: 1      # 자연 생성 광석 채굴 1회
+      farmer: 1     # 직접 심은 작물 직접 수확 1회
+      fisher: 1     # 낚시 1회
+      hunter: 1     # 몹 처치 1회
+      cook: 1       # 요리 완료 1회
+    # 승급에 필요한 숙련도 레벨 (등급 인덱스 0~7)
+    rank-promotion-levels:
+      0: 0     # 신입
+      1: 5     # 폐급
+      2: 10    # 초급
+      3: 20    # 중급
+      4: 30    # 상급
+      5: 50    # 최상급
+      6: 70    # 특급
+      7: 100   # 짬킹
 
 resource-packs:
   enabled: true

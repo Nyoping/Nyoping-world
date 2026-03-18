@@ -25,6 +25,7 @@ import kr.wonguni.nationwar.core.DataStore;
 import kr.wonguni.nationwar.model.JobType;
 import kr.wonguni.nationwar.model.PlayerProfile;
 import org.bukkit.Bukkit;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -67,7 +68,11 @@ public class JobService {
             lore.add("\u00a77\ucd5c\ub300 2\uac1c\uae4c\uc9c0 \uc120\ud0dd \uac00\ub2a5");
             PlayerProfile prof = this.store.getOrCreatePlayer(p.getUniqueId());
             int r = prof.getJobRank(t);
-            lore.add("\u00a77\ub4f1\uae09: \u00a7f" + r);
+            lore.add("\u00a77\ub4f1\uae09: \u00a7f" + rankName(r));
+            int profLevel = prof.getJobProficiencyLevel(t);
+            int profXp = prof.getJobProficiency(t);
+            int xpInLevel = profXp % PlayerProfile.XP_PER_LEVEL;
+            lore.add("\u00a77\uc219\ub828\ub3c4: \u00a7fLv." + profLevel + " (" + xpInLevel + "/" + PlayerProfile.XP_PER_LEVEL + ")");
             long cdMs = this.plugin.getConfig().getLong("jobs.remove-cooldown-hours", 24L) * 3600L * 1000L;
             long remain = Math.max(0L, cdMs - (System.currentTimeMillis() - prof.getLastJobRemoveAt()));
             if (current.contains((Object)t)) {
@@ -177,6 +182,16 @@ private Material iconOf(JobType t) {
             case JobType.BREWER -> Material.BREWING_STAND;
             default -> Material.PAPER;
         };
+    }
+
+    private static final String[] RANK_NAMES = {
+        "\uc2e0\uc785", "\ud3d0\uae09", "\ucd08\uae09", "\uc911\uae09",
+        "\uc0c1\uae09", "\ucd5c\uc0c1\uae09", "\ud2b9\uae09", "\uc9ec\ud0b9"
+    };
+
+    public static String rankName(int rank) {
+        if (rank < 0 || rank >= RANK_NAMES.length) return "???";
+        return RANK_NAMES[rank];
     }
 
     public static String koreanName(JobType t) {

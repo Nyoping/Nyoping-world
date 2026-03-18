@@ -83,13 +83,16 @@ public class FarmerListener implements Listener {
         Block b = e.getBlock();
         Material type = b.getType();
 
-        // Only farmers get bonuses
-        if (!jobs.getJobs(p.getUniqueId()).contains(JobType.FARMER)) return;
+        boolean isFarmer = jobs.getJobs(p.getUniqueId()).contains(JobType.FARMER);
 
         // Handle melon/pumpkin blocks via adjacent stem ownership
         if (type == Material.MELON || type == Material.PUMPKIN) {
-            if (!isOwnedByAdjacentStem(p, b)) return;
-            handleDropsWithBonuses(e, p, b, null, false);
+            if (!isFarmer) return;
+            boolean isOwned = isOwnedByAdjacentStem(p, b);
+            if (isOwned) {
+                handleDropsWithBonuses(e, p, b, null, false);
+            }
+            // Non-owned: vanilla drops (no grade/double/proficiency)
             return;
         }
 
@@ -98,13 +101,19 @@ public class FarmerListener implements Listener {
         Ageable age = (Ageable)data;
         if (age.getAge() < age.getMaximumAge()) return; // only mature
 
-        // ownership condition: same player placed AND harvest
-        java.util.UUID owner = store.getCropOwner(locKey(b));
-        if (owner == null || !owner.equals(p.getUniqueId())) return;
+        if (!isFarmer) return;
 
-        // replant: preserve block data (direction/facing) but set age=0
-        BlockData originalData = b.getBlockData().clone();
-        handleDropsWithBonuses(e, p, b, originalData, true);
+        // Ownership check: direct plant + direct harvest = bonuses
+        java.util.UUID owner = store.getCropOwner(locKey(b));
+        boolean isOwned = owner != null && owner.equals(p.getUniqueId());
+
+        if (isOwned) {
+            // Full bonuses: grade + double + proficiency + auto-replant
+            BlockData originalData = b.getBlockData().clone();
+            handleDropsWithBonuses(e, p, b, originalData, true);
+        }
+        // Non-owned: harvest allowed with vanilla drops (no grade/double/proficiency)
+        // The vanilla block break drops happen naturally since we don't intervene
     }
 
     private boolean isOwnedByAdjacentStem(Player p, Block block) {
@@ -133,6 +142,16 @@ public class FarmerListener implements Listener {
         double dbl = plugin.getConfig().getDouble("farmer.double-chance-by-rank." + rank, 0.0);
 
         boolean doubled = rng.nextDouble() < dbl;
+
+        // Proficiency gain: owned crop harvest grants XP
+        int xpGain = plugin.getConfig().getInt("jobs.proficiency.xp-per-action.farmer", 1);
+        int oldLevel = prof.getJobProficiencyLevel(JobType.FARMER);
+        prof.addJobProficiency(JobType.FARMER, xpGain);
+        int newLevel = prof.getJobProficiencyLevel(JobType.FARMER);
+        if (newLevel > oldLevel) {
+            p.sendMessage("§e[농부] §f숙련도 레벨 UP! §a" + oldLevel + " → " + newLevel);
+        }
+        store.savePlayers();
 
         for (ItemStack it : drops) {
             if (it == null || it.getType() == Material.AIR) continue;

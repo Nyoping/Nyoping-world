@@ -102,6 +102,15 @@ public class DataStore {
                     }
                 }
 
+                if (yml.getConfigurationSection(key + ".jobProficiency") != null) {
+                    for (String pk : yml.getConfigurationSection(key + ".jobProficiency").getKeys(false)) {
+                        try {
+                            JobType jt = JobType.valueOf(pk.trim().toUpperCase(Locale.ROOT));
+                            p.setJobProficiency(jt, yml.getInt(key + ".jobProficiency." + pk, 0));
+                        } catch (Exception ignored) {}
+                    }
+                }
+
                 if (yml.getConfigurationSection(key + ".stats") != null) {
                     for (String sk : yml.getConfigurationSection(key + ".stats").getKeys(false)) {
                         StatType st = StatType.fromString(sk);
@@ -142,6 +151,9 @@ public class DataStore {
 
             for (Map.Entry<JobType, Integer> e : p.getJobRanks().entrySet()) {
                 yml.set(key + ".jobRanks." + e.getKey().name(), e.getValue());
+            }
+            for (Map.Entry<JobType, Integer> e : p.getJobProficiencyMap().entrySet()) {
+                yml.set(key + ".jobProficiency." + e.getKey().name(), e.getValue());
             }
             for (Map.Entry<StatType, Integer> e : p.getStatsView().entrySet()) {
                 yml.set(key + ".stats." + e.getKey().name(), e.getValue());

@@ -122,6 +122,16 @@ public class MinerListener implements Listener {
         double rare = plugin.getConfig().getDouble("miner.grade-chance-by-rank." + rank + ".rare", 0.0);
         double epic = plugin.getConfig().getDouble("miner.grade-chance-by-rank." + rank + ".epic", 0.0);
 
+        // Proficiency gain: natural ore mining grants XP
+        int xpGain = plugin.getConfig().getInt("jobs.proficiency.xp-per-action.miner", 1);
+        int oldLevel = prof.getJobProficiencyLevel(JobType.MINER);
+        prof.addJobProficiency(JobType.MINER, xpGain);
+        int newLevel = prof.getJobProficiencyLevel(JobType.MINER);
+        if (newLevel > oldLevel) {
+            p.sendMessage("§e[광부] §f숙련도 레벨 UP! §a" + oldLevel + " → " + newLevel);
+        }
+        store.savePlayers();
+
         for (ItemStack it : drops) {
             RawOreType rt = rawTypeFromDrop(it);
             if (rt != null) {
