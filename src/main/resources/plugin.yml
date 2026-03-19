@@ -1,82 +1,57 @@
-name: NyopingWorld
-version: '${project.version}'
-main: com.nyoping.world.NyopingWorld
-api-version: '1.20'
-description: 종합 서버 관리 플러그인
-author: Nyoping
+name: NationWar
+version: 1.0.0
+main: kr.wonguni.nationwar.NationWarPlugin
+api-version: '1.21'
+author: wonguni
 
 commands:
-  rank:
-    description: 랭크 관리
-    usage: /rank [set <플레이어> <랭크>]
-    permission: nyoping.rank
-  money:
-    description: 잔액 확인 및 관리
-    usage: /money [set|give <플레이어> <금액>]
-  pay:
-    description: 다른 플레이어에게 송금
-    usage: /pay <플레이어> <금액>
+  givecookfood:
+    description: Give custom cook food (placeholder bread)
+    usage: /givecookfood <type> [amount]
+    permission: nationwar.admin
+  givecropseed:
+    description: Give custom crop seeds
+    usage: /givecropseed <type> [amount]
+    permission: nationwar.admin
+  jobadmin:
+    description: Job admin utilities. (OP)
+    usage: /jobadmin <rank|reset|cooldown>
   shop:
-    description: 상점
-    usage: /shop [buy <아이템> [수량]]
-  home:
-    description: 홈으로 이동
-    usage: /home [이름]
-  sethome:
-    description: 홈 설정
-    usage: /sethome [이름]
-  delhome:
-    description: 홈 삭제
-    usage: /delhome <이름>
-  warp:
-    description: 워프로 이동
-    usage: /warp [이름]
-  setwarp:
-    description: 워프 설정
-    usage: /setwarp <이름>
-    permission: nyoping.warp.set
-  delwarp:
-    description: 워프 삭제
-    usage: /delwarp <이름>
-    permission: nyoping.warp.delete
-  tpa:
-    description: 텔레포트 요청
-    usage: /tpa <플레이어>
-  tpaccept:
-    description: 텔레포트 요청 수락
-    usage: /tpaccept
-  tpdeny:
-    description: 텔레포트 요청 거절
-    usage: /tpdeny
-  broadcast:
-    description: 서버 공지
-    usage: /broadcast <메시지>
-    permission: nyoping.broadcast
-  mute:
-    description: 플레이어 채팅 금지
-    usage: /mute <플레이어>
-    permission: nyoping.mute
-  unmute:
-    description: 플레이어 채팅 금지 해제
-    usage: /unmute <플레이어>
-    permission: nyoping.mute
+    description: Open the job sell shop.
+    usage: /shop [sell|reload]
+  menu:
+    description: Open main menu.
+    usage: /menu
+  nation:
+    description: Nation commands.
+    usage: /nation help
+  war:
+    description: War & matchmaking commands.
+    usage: /war help
+  money:
+    description: Show your balance.
+    usage: /money
+  pay:
+    description: Pay money to a player.
+    usage: /pay <player> <amount>
+  bind:
+    description: Bind the item in your hand to a player. (OP)
+    usage: /bind <player>
+  abind:
+    description: Absolute-bind the item in your hand to a player. (OP)
+    usage: /abind <player>
+  nexus:
+    description: Nexus utility. (OP)
+    usage: /nexus give <player>
+
+  stat:
+    description: Stat points and upgrades.
+    usage: /stat [info|up <stat>]
 
 permissions:
-  nyoping.rank:
-    description: 랭크 관리 권한
+  nationwar.admin:
     default: op
-  nyoping.economy.admin:
-    description: 경제 관리자 권한
+  nationwar.bind:
     default: op
-  nyoping.warp.set:
-    description: 워프 설정 권한
-    default: op
-  nyoping.warp.delete:
-    description: 워프 삭제 권한
-    default: op
-  nyoping.broadcast:
-    description: 공지 권한
-    default: op
-  nyoping.mute:
-    description: 뮤트 권한
+  nationwar.nexus:
     default: op
