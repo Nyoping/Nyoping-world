@@ -28,4 +28,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: NyopingWorld
-          path: target/NyopingWorld-*.jar
+          path: target/nationwar-*.jar
