@@ -55,7 +55,7 @@ public class NationWarPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new JobQuestListener(this.dataStore, this.jobQuestService), this);
         Bukkit.getPluginManager().registerEvents(new HunterMobLevelListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CookWorldRulesListener(this, this.jobService), this);
-        Bukkit.getPluginManager().registerEvents(new CookTriggerListener(this, this.jobService, this.customFoodService), this);
+        Bukkit.getPluginManager().registerEvents(new CookTriggerListener(this, this.jobService, this.dataStore, this.customFoodService), this);
         Bukkit.getPluginManager().registerEvents(new WaterListener(this, this.waterService), this);
         Bukkit.getPluginManager().registerEvents(new PlayerListener(this, this.moneyService, this.nationService, this.bindService, this.jobService, this.protectionService, this.warService, this.borderVisualService, this.guiService), this);
         Bukkit.getPluginManager().registerEvents(new HunterListener(this, this.dataStore, this.jobService), this);
@@ -67,6 +67,7 @@ public class NationWarPlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ProtectionListener(this.protectionService), this);
         Bukkit.getPluginManager().registerEvents(new BindListener(this, this.bindService), this);
         Bukkit.getPluginManager().registerEvents(new ChestLockListener(this, this.nationService, this.protectionService, this.chestLockService), this);
+        Bukkit.getPluginManager().registerEvents(new VillageCropSpawnListener(this, this.customCropService), this);
         Bukkit.getPluginManager().registerEvents(new WarListener(this.warService), this);
 
         if (getCommand("menu") != null) getCommand("menu").setExecutor(new MenuCommand(this.guiService));

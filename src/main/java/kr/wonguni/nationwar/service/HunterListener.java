@@ -1,6 +1,7 @@
 package kr.wonguni.nationwar.service;
 
 import java.util.*;
+import java.util.Collections;
 import kr.wonguni.nationwar.core.DataStore;
 import kr.wonguni.nationwar.model.JobType;
 import kr.wonguni.nationwar.model.PlayerProfile;
@@ -47,6 +48,22 @@ public class HunterListener implements Listener {
         this.headTierKey = new NamespacedKey(plugin, "nw_head_tier");
     }
 
+    // Whitelist: specific mobs drop specific items with grade
+    private static final Map<EntityType, Set<Material>> WHITELIST_LOOT = new HashMap<>();
+    static {
+        Set<Material> zombieLoot = EnumSet.of(Material.IRON_INGOT, Material.CARROT, Material.POTATO);
+        WHITELIST_LOOT.put(EntityType.ZOMBIE, zombieLoot);
+        WHITELIST_LOOT.put(EntityType.HUSK, zombieLoot);
+        WHITELIST_LOOT.put(EntityType.ZOMBIE_VILLAGER, zombieLoot);
+        WHITELIST_LOOT.put(EntityType.DROWNED, EnumSet.of(Material.COPPER_INGOT));
+        WHITELIST_LOOT.put(EntityType.ZOMBIFIED_PIGLIN, EnumSet.of(Material.GOLD_NUGGET, Material.GOLD_INGOT));
+        WHITELIST_LOOT.put(EntityType.VINDICATOR, EnumSet.of(Material.EMERALD));
+        WHITELIST_LOOT.put(EntityType.EVOKER, EnumSet.of(Material.EMERALD));
+        WHITELIST_LOOT.put(EntityType.WITCH, EnumSet.of(Material.REDSTONE));
+        WHITELIST_LOOT.put(EntityType.SQUID, EnumSet.of(Material.INK_SAC));
+        WHITELIST_LOOT.put(EntityType.GLOW_SQUID, EnumSet.of(Material.GLOW_INK_SAC));
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onDeath(EntityDeathEvent e) {
         Player killer = e.getEntity().getKiller();
@@ -56,14 +73,29 @@ public class HunterListener implements Listener {
         PlayerProfile prof = store.getOrCreatePlayer(killer.getUniqueId());
         int rank = Math.max(0, Math.min(7, prof.getJobRank(JobType.HUNTER)));
 
+        // Proficiency gain: mob kill grants XP
+        if (isHunter) {
+            int xpGain = plugin.getConfig().getInt("jobs.proficiency.xp-per-action.hunter", 1);
+            int oldLevel = prof.getJobProficiencyLevel(JobType.HUNTER);
+            prof.addJobProficiency(JobType.HUNTER, xpGain);
+            int newLevel = prof.getJobProficiencyLevel(JobType.HUNTER);
+            if (newLevel > oldLevel) {
+                killer.sendMessage("§e[사냥꾼] §f숙련도 레벨 UP! §a" + oldLevel + " → " + newLevel);
+            }
+            store.savePlayers();
+        }
+
         if (isHunter) {
             double rare = plugin.getConfig().getDouble("hunter.loot-grade-chance-by-rank." + rank + ".rare", 0.0);
             double epic = plugin.getConfig().getDouble("hunter.loot-grade-chance-by-rank." + rank + ".epic", 0.0);
 
+            // Determine which items can be graded (food + whitelist)
+            Set<Material> whitelistMats = WHITELIST_LOOT.getOrDefault(e.getEntity().getType(), Collections.emptySet());
+
             List<ItemStack> newDrops = new ArrayList<>();
             for (ItemStack it : e.getDrops()) {
                 if (it == null || it.getType() == Material.AIR) continue;
-                if (!GRADE_LOOT.contains(it.getType())) {
+                if (!GRADE_LOOT.contains(it.getType()) && !whitelistMats.contains(it.getType())) {
                     newDrops.add(it);
                     continue;
                 }
@@ -107,6 +139,12 @@ public class HunterListener implements Listener {
     private boolean isIndirectOneShot20Plus(Entity entity) {
         EntityDamageEvent cause = entity.getLastDamageCause();
         if (cause == null) return false;
+        // Block heads if: non-player-attack damage type OR single hit >= 20
+        EntityDamageEvent.DamageCause dc = cause.getCause();
+        boolean isPlayerAttack = (dc == EntityDamageEvent.DamageCause.ENTITY_ATTACK
+                || dc == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK
+                || dc == EntityDamageEvent.DamageCause.PROJECTILE);
+        if (!isPlayerAttack) return true; // indirect kill → no head
         return cause.getFinalDamage() >= 20.0;
     }
 

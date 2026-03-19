@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -17,12 +18,14 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.inventory.PrepareSmithingEvent;
@@ -232,6 +235,51 @@ private void applyGrade(ItemStack item, int grade) {
         if (hasGrade(templ) || hasGrade(base) || hasGrade(add)) {
             inv.setResult(null);
         }
+    }
+
+    // --- Miner mob loot grade (문서 §7.6) ---
+    private static final Map<EntityType, Set<Material>> MINER_MOB_LOOT = new java.util.HashMap<>();
+    static {
+        Set<Material> zombieLoot = EnumSet.of(Material.IRON_INGOT);
+        MINER_MOB_LOOT.put(EntityType.ZOMBIE, zombieLoot);
+        MINER_MOB_LOOT.put(EntityType.HUSK, zombieLoot);
+        MINER_MOB_LOOT.put(EntityType.ZOMBIE_VILLAGER, zombieLoot);
+        MINER_MOB_LOOT.put(EntityType.DROWNED, EnumSet.of(Material.COPPER_INGOT));
+        MINER_MOB_LOOT.put(EntityType.ZOMBIFIED_PIGLIN, EnumSet.of(Material.GOLD_NUGGET, Material.GOLD_INGOT));
+        MINER_MOB_LOOT.put(EntityType.VINDICATOR, EnumSet.of(Material.EMERALD));
+        MINER_MOB_LOOT.put(EntityType.EVOKER, EnumSet.of(Material.EMERALD));
+        MINER_MOB_LOOT.put(EntityType.WITCH, EnumSet.of(Material.REDSTONE));
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onMobDeath(EntityDeathEvent e) {
+        Player killer = e.getEntity().getKiller();
+        if (killer == null) return;
+        if (!jobService.getJobs(killer.getUniqueId()).contains(JobType.MINER)) return;
+
+        Set<Material> targets = MINER_MOB_LOOT.get(e.getEntity().getType());
+        if (targets == null || targets.isEmpty()) return;
+
+        PlayerProfile prof = store.getOrCreatePlayer(killer.getUniqueId());
+        int rank = clampRank(prof.getJobRank(JobType.MINER));
+        double rare = plugin.getConfig().getDouble("miner.grade-chance-by-rank." + rank + ".rare", 0.0);
+        double epic = plugin.getConfig().getDouble("miner.grade-chance-by-rank." + rank + ".epic", 0.0);
+
+        List<ItemStack> newDrops = new ArrayList<>();
+        for (ItemStack it : e.getDrops()) {
+            if (it == null || it.getType() == Material.AIR) { newDrops.add(it); continue; }
+            if (!targets.contains(it.getType())) { newDrops.add(it); continue; }
+            int amt = it.getAmount();
+            for (int i = 0; i < amt; i++) {
+                ItemStack one = it.clone();
+                one.setAmount(1);
+                int g = rollGrade(rare, epic);
+                if (g > 0) applyGrade(one, g);
+                newDrops.add(one);
+            }
+        }
+        e.getDrops().clear();
+        e.getDrops().addAll(newDrops);
     }
 
     private boolean hasGrade(ItemStack it) {

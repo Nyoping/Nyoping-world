@@ -30,8 +30,8 @@ public class HunterMobLevelListener implements Listener {
 
         le.getPersistentDataContainer().set(lvlKey, PersistentDataType.INTEGER, lvl);
 
-        // Placeholder scaling: +1% per level (doc table can replace later)
-        double mult = 1.0 + (lvl - 1) * 0.01;
+        // 문서 §10.11: 100레벨 = 바닐라의 10배 → mult = 1 + (level-1)*(9/99)
+        double mult = 1.0 + (lvl - 1) * (9.0 / 99.0);
         try {
             if (le.getAttribute(Attribute.GENERIC_MAX_HEALTH) != null) {
                 double base = le.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();

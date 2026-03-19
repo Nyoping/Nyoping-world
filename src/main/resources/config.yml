@@ -154,15 +154,33 @@ miner:
 
 
 fisher:
+  grade-chance-by-rank:
+    0: { rare: 0.005, epic: 0.0005 }
+    1: { rare: 0.01,  epic: 0.001 }
+    2: { rare: 0.03,  epic: 0.003 }
+    3: { rare: 0.06,  epic: 0.008 }
+    4: { rare: 0.10,  epic: 0.015 }
+    5: { rare: 0.15,  epic: 0.025 }
+    6: { rare: 0.22,  epic: 0.04 }
+    7: { rare: 0.30,  epic: 0.06 }
   double-chance-by-rank:
     0: 0
-    1: 1
+    1: 0.01
+    2: 0.03
+    3: 0.06
+    4: 0.10
+    5: 0.15
+    6: 0.22
+    7: 0.30
+  enchant-boost-by-rank:
+    0: 1
+    1: 2
     2: 3
-    3: 6
-    4: 10
-    5: 15
-    6: 22
-    7: 30
+    3: 4
+    4: 5
+    5: 6
+    6: 7
+    7: 8
 
 
 farmer:
@@ -222,7 +240,21 @@ cook:
     5: { rare: 0.15,  epic: 0.025 }
     6: { rare: 0.22,  epic: 0.04 }
     7: { rare: 0.30,  epic: 0.06 }
-
+  time-reduction-by-rank:
+    0: 0.0
+    1: 0.0
+    2: 0.05
+    3: 0.10
+    4: 0.15
+    5: 0.20
+    6: 0.25
+    7: 0.30
+  campfire_auto_extinguish_minutes: 10
+  water:
+    record_ttl_hours: 72
+    record_limit: 10000
+  smoker_buffer:
+    tick_interval_ticks: 20
 
 economy:
   enchant:
@@ -241,11 +273,3 @@ economy:
   base_prices:
     bow: 120
     fishing_rod: 90
-
-cook:
-  campfire_auto_extinguish_minutes: 10
-  water:
-    record_ttl_hours: 72
-    record_limit: 10000
-  smoker_buffer:
-    tick_interval_ticks: 20

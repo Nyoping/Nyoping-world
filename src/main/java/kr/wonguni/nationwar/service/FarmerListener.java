@@ -16,9 +16,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -38,7 +40,14 @@ public class FarmerListener implements Listener {
             Material.WHEAT, Material.CARROTS, Material.POTATOES, Material.BEETROOTS,
             Material.NETHER_WART, Material.COCOA,
             Material.MELON_STEM, Material.PUMPKIN_STEM,
-            Material.ATTACHED_MELON_STEM, Material.ATTACHED_PUMPKIN_STEM
+            Material.ATTACHED_MELON_STEM, Material.ATTACHED_PUMPKIN_STEM,
+            Material.SUGAR_CANE, Material.SWEET_BERRY_BUSH, Material.CAVE_VINES,
+            Material.CAVE_VINES_PLANT, Material.BEE_NEST, Material.BEEHIVE
+    );
+
+    // Sapling ownership for apple drops (문서 §8.9)
+    private static final Set<Material> SAPLINGS = EnumSet.of(
+            Material.OAK_SAPLING, Material.DARK_OAK_SAPLING
     );
 
     public FarmerListener(JavaPlugin plugin, DataStore store, JobService jobs, CustomCropService customCrops) {
@@ -56,8 +65,9 @@ public class FarmerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent e) {
         Block b = e.getBlockPlaced();
-        if (!OWNED_PLANT_BLOCKS.contains(b.getType())) return;
-        store.setCropOwner(locKey(b), e.getPlayer().getUniqueId());
+        if (OWNED_PLANT_BLOCKS.contains(b.getType()) || SAPLINGS.contains(b.getType())) {
+            store.setCropOwner(locKey(b), e.getPlayer().getUniqueId());
+        }
     }
 
     // Farmland trampling protection (문서: 밟힘 방지)
@@ -88,32 +98,97 @@ public class FarmerListener implements Listener {
         // Handle melon/pumpkin blocks via adjacent stem ownership
         if (type == Material.MELON || type == Material.PUMPKIN) {
             if (!isFarmer) return;
-            boolean isOwned = isOwnedByAdjacentStem(p, b);
-            if (isOwned) {
+            if (isOwnedByAdjacentStem(p, b)) {
                 handleDropsWithBonuses(e, p, b, null, false);
             }
-            // Non-owned: vanilla drops (no grade/double/proficiency)
             return;
         }
 
+        // Sugarcane: owned root check (문서 §8.9 사탕수수)
+        if (type == Material.SUGAR_CANE) {
+            if (!isFarmer) return;
+            // Find the root (bottom-most sugarcane)
+            Block root = b;
+            while (root.getRelative(0, -1, 0).getType() == Material.SUGAR_CANE) {
+                root = root.getRelative(0, -1, 0);
+            }
+            java.util.UUID owner = store.getCropOwner(locKey(root));
+            if (owner != null && owner.equals(p.getUniqueId())) {
+                handleDropsWithBonuses(e, p, b, null, false);
+            }
+            return;
+        }
+
+        // Bee nest/hive: farmer ownership (문서 §8.9 벌)
+        if (type == Material.BEE_NEST || type == Material.BEEHIVE) {
+            if (!isFarmer) return;
+            java.util.UUID owner = store.getCropOwner(locKey(b));
+            if (owner != null && owner.equals(p.getUniqueId())) {
+                handleDropsWithBonuses(e, p, b, null, false);
+            }
+            return;
+        }
+
+        // Sweet berry / glow berry: farmer ownership
+        if (type == Material.SWEET_BERRY_BUSH || type == Material.CAVE_VINES || type == Material.CAVE_VINES_PLANT) {
+            if (!isFarmer) return;
+            java.util.UUID owner = store.getCropOwner(locKey(b));
+            if (owner != null && owner.equals(p.getUniqueId())) {
+                handleDropsWithBonuses(e, p, b, null, false);
+            }
+            return;
+        }
+
+        // Leaf block: apple from owned sapling's tree (문서 §8.9 사과)
+        if (type.name().endsWith("_LEAVES")) {
+            // Only check for oak/dark_oak leaves which drop apples
+            if (type != Material.OAK_LEAVES && type != Material.DARK_OAK_LEAVES) return;
+            if (!isFarmer) return;
+            // Search nearby for owned sapling-grown tree (simplified: check below for log with owner)
+            // This is a simplified implementation - check a range of blocks below for an owned log/trunk
+            for (int dy = 0; dy <= 8; dy++) {
+                Block below = b.getRelative(0, -dy, 0);
+                if (below.getType().name().endsWith("_LOG")) {
+                    java.util.UUID owner = store.getCropOwner(locKey(below));
+                    if (owner != null && owner.equals(p.getUniqueId())) {
+                        handleDropsWithBonuses(e, p, b, null, false);
+                        return;
+                    }
+                }
+            }
+            return;
+        }
+
+        // Standard Ageable crops (wheat, carrot, potato, etc.)
         BlockData data = b.getBlockData();
         if (!(data instanceof Ageable)) return;
         Ageable age = (Ageable)data;
-        if (age.getAge() < age.getMaximumAge()) return; // only mature
+        if (age.getAge() < age.getMaximumAge()) return;
 
         if (!isFarmer) return;
 
-        // Ownership check: direct plant + direct harvest = bonuses
         java.util.UUID owner = store.getCropOwner(locKey(b));
         boolean isOwned = owner != null && owner.equals(p.getUniqueId());
 
         if (isOwned) {
-            // Full bonuses: grade + double + proficiency + auto-replant
             BlockData originalData = b.getBlockData().clone();
             handleDropsWithBonuses(e, p, b, originalData, true);
         }
-        // Non-owned: harvest allowed with vanilla drops (no grade/double/proficiency)
-        // The vanilla block break drops happen naturally since we don't intervene
+    }
+
+    // Track sapling → tree growth: when sapling becomes log, transfer ownership
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onTreeGrow(org.bukkit.event.world.StructureGrowEvent e) {
+        if (e.getLocation() == null) return;
+        Block sapling = e.getLocation().getBlock();
+        java.util.UUID owner = store.getCropOwner(locKey(sapling));
+        if (owner == null) return;
+        // Mark all new log blocks with the sapling owner
+        for (org.bukkit.block.BlockState bs : e.getBlocks()) {
+            if (bs.getType().name().endsWith("_LOG")) {
+                store.setCropOwner(locKey(bs.getBlock()), owner);
+            }
+        }
     }
 
     private boolean isOwnedByAdjacentStem(Player p, Block block) {
@@ -229,6 +304,45 @@ private boolean consumeOne(Player p, Material mat) {
             return true;
         }
         return false;
+    }
+
+    // --- Farmer mob loot grade (문서 §8.10) ---
+    private static final Set<Material> FARMER_MOB_LOOT = EnumSet.of(
+            Material.BEEF, Material.PORKCHOP, Material.CHICKEN, Material.MUTTON, Material.RABBIT,
+            Material.POTATO, Material.CARROT
+    );
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onMobDeath(EntityDeathEvent e) {
+        Player killer = e.getEntity().getKiller();
+        if (killer == null) return;
+        if (!jobs.getJobs(killer.getUniqueId()).contains(JobType.FARMER)) return;
+
+        PlayerProfile prof = store.getOrCreatePlayer(killer.getUniqueId());
+        int rank = Math.max(0, Math.min(7, prof.getJobRank(JobType.FARMER)));
+        double rare = plugin.getConfig().getDouble("farmer.grade-chance-by-rank." + rank + ".rare", 0.0);
+        double epic = plugin.getConfig().getDouble("farmer.grade-chance-by-rank." + rank + ".epic", 0.0);
+
+        List<ItemStack> newDrops = new ArrayList<>();
+        boolean changed = false;
+        for (ItemStack it : e.getDrops()) {
+            if (it == null || it.getType() == Material.AIR) { newDrops.add(it); continue; }
+            if (!FARMER_MOB_LOOT.contains(it.getType())) { newDrops.add(it); continue; }
+            changed = true;
+            int amt = it.getAmount();
+            // No 2x for mob loot (문서: 몹 전리품에는 2배 특전 미적용)
+            for (int i = 0; i < amt; i++) {
+                ItemStack one = it.clone();
+                one.setAmount(1);
+                int g = rollGrade(rare, epic);
+                if (g > 0) applyGrade(one, g);
+                newDrops.add(one);
+            }
+        }
+        if (changed) {
+            e.getDrops().clear();
+            e.getDrops().addAll(newDrops);
+        }
     }
 
     private int rollGrade(double rare, double epic) {
